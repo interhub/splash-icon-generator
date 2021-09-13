@@ -1,14 +1,34 @@
 const sharp = require('sharp')
 const fs = require('fs')
+const rimraf = require('rimraf')
 
 const inputSplashPath = './splashscreen_image.png'
 const inputIconPath = './icon.png'
+
+// const getCircleShapeByWidth = (width) => Buffer.from(`<svg><circle cx="${width / 2}" cy="${width / 2}" r="${width / 2}" /></svg>`)
+
+const getRoundedShape = (width, radiusPercent) => {
+    const radius = width * Number(radiusPercent) / 100
+    return Buffer.from(`
+<svg><rect x="0" y="0" height="${width}" width="${width}" rx="${radius}" ry="${radius}"/></svg>
+`)
+}
 
 const mainFolder = {
     IOS: 'ios',
     ANDROID: 'android'
 }
 
+const iosIconFolderName = 'AppIcon.appiconset'
+
+const removeDir = async (path) => {
+    return new Promise((ok) => {
+        rimraf(path, function () {
+            console.log('removed', path)
+            ok()
+        })
+    })
+}
 
 const splashFolders = [
     {folder: 'drawable-mdpi', width: 320, height: 480},
@@ -28,33 +48,37 @@ const iconFolders = [
 
 const iconTypes = [{name: 'ic_launcher_round.png', round: true}, {name: 'ic_launcher.png', round: false}]
 
-const start = async () => {
-    await fs.mkdirSync(mainFolder.IOS)
+const startAndroid = async () => {
+    await removeDir(mainFolder.ANDROID)
     await fs.mkdirSync(mainFolder.ANDROID)
 
     for (const {height, width, folder} of splashFolders) {
-        await fs.mkdirSync(folder)
+        await fs.mkdirSync(`${mainFolder.ANDROID}/${folder}`)
         await sharp(inputSplashPath)
             .resize(width, height)
-            .toFile(folder + '/splashscreen_image.png', (err, info) => {
+            .toFile(`${mainFolder.ANDROID}/${folder}/splashscreen_image.png`, (err, info) => {
                 const message = !err ? ' ✅ Success' : ' ⛔️ Error'
                 console.log(message, 'created result', folder, {width, height})
             })
     }
 
     for (const {size, folder} of iconFolders) {
-        await fs.mkdirSync(folder)
+        await fs.mkdirSync(`${mainFolder.ANDROID}/${folder}`)
         for (const {name, round} of iconTypes) {
             await sharp(inputIconPath)
                 .resize(size, size)
-                .toFile(folder + '/' + name, (err, info) => {
+                .composite([{
+                    input: getRoundedShape(size, round ? 100 : 10),
+                    blend: 'dest-in'
+                }])
+                .toFile(`${mainFolder.ANDROID}/${folder}/${name}`, (err, info) => {
                     const message = !err ? ' ✅ Success' : ' ⛔️ Error'
                     console.log(message, 'created result', folder, {size})
                 })
         }
     }
 
-
 }
 
-start()
+// startIos()
+startAndroid()

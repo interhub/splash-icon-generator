@@ -1,7 +1,10 @@
 {
   "dependencies": {
     "@types/node": "^16.9.1",
-    "mobisplash": "^0.2.2",
+    "rimraf": "^3.0.2",
     "sharp": "^0.29.1"
+  },
+  "scripts": {
+    "start": "node generator.js"
   }
 }
