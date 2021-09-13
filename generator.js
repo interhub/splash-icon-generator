@@ -81,7 +81,7 @@ const startAndroid = async () => {
             const roundPercent = round ? 100 : 10
             const result = await createImage(inputIconPath, outPath, size, size, roundPercent)
             const message = result ? ' ✅ Success' : ' ⛔️ Error'
-            console.log(message, 'created result', folder, {size})
+            console.log(message, 'created result', folder, {size, round})
         }
     }
 
