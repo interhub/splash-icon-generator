@@ -5,10 +5,11 @@ const rimraf = require('rimraf')
 const inputSplashPath = './splashscreen_image.png'
 const inputIconPath = './icon.png'
 
-const getRoundedShape = (width, radiusPercent) => {
-    const radius = width * Number(radiusPercent) / 100
+const getRoundedShape = (width, height, radiusPercent) => {
+    const radiusW = width * Number(radiusPercent) / 100
+    const radiusH = height * Number(radiusPercent) / 100
     return Buffer.from(`
-<svg><rect x="0" y="0" height="${width}" width="${width}" rx="${radius}" ry="${radius}"/></svg>
+<svg><rect x="0" y="0" width="${width}" height="${height}" rx="${radiusW}" ry="${radiusH}"/></svg>
 `)
 }
 
@@ -46,33 +47,41 @@ const iconFolders = [
 
 const iconTypes = [{name: 'ic_launcher_round.png', round: true}, {name: 'ic_launcher.png', round: false}]
 
+const createImage = async (inputPath, outputPath, width, height, roundPercent = 0) => {
+    return new Promise((ok) => {
+        sharp(inputPath)
+            .resize(width, height)
+            .composite([{
+                input: getRoundedShape(width, height, roundPercent),
+                blend: 'dest-in'
+            }])
+            .toFile(outputPath, (err, info) => {
+                //info
+                ok(!err)
+            })
+    })
+}
+
 const startAndroid = async () => {
     await removeDir(mainFolder.ANDROID)
     await fs.mkdirSync(mainFolder.ANDROID)
 
     for (const {height, width, folder} of splashFolders) {
         await fs.mkdirSync(`${mainFolder.ANDROID}/${folder}`)
-        await sharp(inputSplashPath)
-            .resize(width, height)
-            .toFile(`${mainFolder.ANDROID}/${folder}/splashscreen_image.png`, (err, info) => {
-                const message = !err ? ' ✅ Success' : ' ⛔️ Error'
-                console.log(message, 'created result', folder, {width, height})
-            })
+        const outPath = `${mainFolder.ANDROID}/${folder}/splashscreen_image.png`
+        const result = await createImage(inputSplashPath, outPath, width, height, 0)
+        const message = result ? ' ✅ Success' : ' ⛔️ Error'
+        console.log(message, 'created result', folder, {width, height})
     }
 
     for (const {size, folder} of iconFolders) {
         await fs.mkdirSync(`${mainFolder.ANDROID}/${folder}`)
         for (const {name, round} of iconTypes) {
-            await sharp(inputIconPath)
-                .resize(size, size)
-                .composite([{
-                    input: getRoundedShape(size, round ? 100 : 10),
-                    blend: 'dest-in'
-                }])
-                .toFile(`${mainFolder.ANDROID}/${folder}/${name}`, (err, info) => {
-                    const message = !err ? ' ✅ Success' : ' ⛔️ Error'
-                    console.log(message, 'created result', folder, {size})
-                })
+            const outPath = `${mainFolder.ANDROID}/${folder}/${name}`
+            const roundPercent = round ? 100 : 10
+            const result = await createImage(inputIconPath, outPath, size, size, roundPercent)
+            const message = result ? ' ✅ Success' : ' ⛔️ Error'
+            console.log(message, 'created result', folder, {size})
         }
     }
 
