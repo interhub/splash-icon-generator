@@ -35,7 +35,6 @@ const splashFolders = [
     {folder: 'drawable-xhdpi', width: 640, height: 960},
     {folder: 'drawable-xxhdpi', width: 960, height: 1440},
     {folder: 'drawable-xxxhdpi', width: 1280, height: 1920},
-    {folder: 'play-store-banner', width: 1024, height: 512},
     //play store
     {folder: 'play-store-banner', width: 1024, height: 512},
 ]
@@ -54,16 +53,20 @@ const iconTypes = [{name: 'ic_launcher_round.png', round: true}, {name: 'ic_laun
 
 const createImage = async (inputPath, outputPath, width, height, roundPercent = 0) => {
     return new Promise((ok) => {
-        sharp(inputPath)
-            .resize(width, height)
-            .composite([{
-                input: getRoundedShape(width, height, roundPercent),
-                blend: 'dest-in'
-            }])
-            .toFile(outputPath, (err, info) => {
-                //info
-                ok(!err)
-            })
+        try {
+            sharp(inputPath)
+                .resize(width, height)
+                .composite([{
+                    input: getRoundedShape(width, height, roundPercent),
+                    blend: 'dest-in'
+                }])
+                .toFile(outputPath, (err, info) => {
+                    //info
+                    ok(!err)
+                })
+        } catch (e) {
+            console.log(e, 'err')
+        }
     })
 }
 
