@@ -5,8 +5,6 @@ const rimraf = require('rimraf')
 const inputSplashPath = './splashscreen_image.png'
 const inputIconPath = './icon.png'
 
-// const getCircleShapeByWidth = (width) => Buffer.from(`<svg><circle cx="${width / 2}" cy="${width / 2}" r="${width / 2}" /></svg>`)
-
 const getRoundedShape = (width, radiusPercent) => {
     const radius = width * Number(radiusPercent) / 100
     return Buffer.from(`
@@ -19,7 +17,7 @@ const mainFolder = {
     ANDROID: 'android'
 }
 
-const iosIconFolderName = 'AppIcon.appiconset'
+// const iosIconFolderName = 'AppIcon.appiconset'
 
 const removeDir = async (path) => {
     return new Promise((ok) => {
