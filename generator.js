@@ -36,6 +36,7 @@ const splashFolders = [
     {folder: 'drawable-xxhdpi', width: 960, height: 1440},
     {folder: 'drawable-xxxhdpi', width: 1280, height: 1920},
     {folder: 'play-store-banner', width: 1024, height: 512},
+    //play store
     {folder: 'play-store-banner', width: 1024, height: 512},
 ]
 
@@ -45,6 +46,7 @@ const iconFolders = [
     {folder: 'mipmap-xhdpi', size: 96},
     {folder: 'mipmap-xxhdpi', size: 144},
     {folder: 'mipmap-xxxhdpi', size: 192},
+    //play store
     {folder: 'play-store-icon', size: 512},
 ]
 
