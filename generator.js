@@ -35,6 +35,8 @@ const splashFolders = [
     {folder: 'drawable-xhdpi', width: 640, height: 960},
     {folder: 'drawable-xxhdpi', width: 960, height: 1440},
     {folder: 'drawable-xxxhdpi', width: 1280, height: 1920},
+    {folder: 'play-store-banner', width: 1024, height: 512},
+    {folder: 'play-store-banner', width: 1024, height: 512},
 ]
 
 const iconFolders = [
@@ -43,6 +45,7 @@ const iconFolders = [
     {folder: 'mipmap-xhdpi', size: 96},
     {folder: 'mipmap-xxhdpi', size: 144},
     {folder: 'mipmap-xxxhdpi', size: 192},
+    {folder: 'play-store-icon', size: 512},
 ]
 
 const iconTypes = [{name: 'ic_launcher_round.png', round: true}, {name: 'ic_launcher.png', round: false}]
