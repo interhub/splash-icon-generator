@@ -4,7 +4,7 @@
 
 # step 1
 
-> put in (or replace) **icon.png** and **splashscreen_image.png** file to directory
+> put in (or replace) **icon.png** and **splashscreen_image.png** files to directory
 
 # step 2
 
