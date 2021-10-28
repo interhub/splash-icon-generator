@@ -6,6 +6,8 @@
     "sharp": "^0.29.1"
   },
   "scripts": {
-    "start": "npx ts-node generator.ts"
+    "start:all": "npx ts-node generate_android.ts && npx ts-node generate_ios.ts",
+    "start:ios": "npx ts-node generate_ios.ts",
+    "start:android": "npx ts-node generate_android.ts"
   }
 }
