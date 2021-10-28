@@ -35,8 +35,6 @@ const splashFolders = [
     {folder: 'drawable-xhdpi', width: 640, height: 960},
     {folder: 'drawable-xxhdpi', width: 960, height: 1440},
     {folder: 'drawable-xxxhdpi', width: 1280, height: 1920},
-    //play store
-    {folder: 'play-store-banner', width: 1024, height: 500},
 ]
 
 const iconFolders = [
@@ -47,6 +45,11 @@ const iconFolders = [
     {folder: 'mipmap-xxxhdpi', size: 192},
     //play store
     {folder: 'play-store-icon', size: 512},
+]
+
+const customIconResizes = [
+    //play store
+    {folder: 'play-store-banner', width: 1024, height: 500},
 ]
 
 const iconTypes = [{name: 'ic_launcher_round.png', round: true}, {name: 'ic_launcher.png', round: false}]
@@ -70,6 +73,7 @@ const createImage = async (inputPath, outputPath, width, height, roundPercent = 
     })
 }
 
+
 const startAndroid = async () => {
     await removeDir(mainFolder.ANDROID)
     await fs.mkdirSync(mainFolder.ANDROID)
@@ -91,6 +95,14 @@ const startAndroid = async () => {
             const message = result ? ' ✅ Success' : ' ⛔️ Error'
             console.log(message, 'created result', folder, {size, round})
         }
+    }
+
+    for (const {height, width, folder} of customIconResizes) {
+        await fs.mkdirSync(`${mainFolder.ANDROID}/${folder}`)
+        const outPath = `${mainFolder.ANDROID}/${folder}/splashscreen_image.png`
+        const result = await createImage(inputIconPath, outPath, width, height, 0)
+        const message = result ? ' ✅ Success' : ' ⛔️ Error'
+        console.log(message, 'created result', folder, {width, height})
     }
 
 }
