@@ -37,9 +37,6 @@ const startAndroid = async () => {
     await fileManipulator.delete.folder({name: MAIN_FOLDER, path: './'})
     await fileManipulator.create.folder({name: MAIN_FOLDER, path: './', replaceExisting: true})
 
-
-    await fileManipulator.create.file({name: 'Contents', ext: 'json', path: './', replaceExisting: true, content: ''})
-
     for (const {height, width, folder} of splashFolders) {
         await fileManipulator.create.folder({
             name: `${MAIN_FOLDER}/${folder}`,
@@ -79,6 +76,7 @@ const startAndroid = async () => {
         console.log(message, 'created result', folder, {width, height})
     }
 
+    console.log('Android finished 🎉')
 }
 
 startAndroid()

@@ -47,6 +47,8 @@ const startIos = async () => {
         const message = result ? ' ✅ Success' : ' ⛔️ Error'
         console.log(message, 'created result', {size, name})
     }
+    
+    console.log('IOS finished 🎉')
 }
 
 startIos()
